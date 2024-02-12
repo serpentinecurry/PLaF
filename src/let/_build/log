@@ -1,0 +1,32 @@
+# dune utop
+# OCAMLPARAM: unset
+# Shared cache: disabled
+# Shared cache location: /home/avanish/.cache/dune/db
+# Workspace root: "/mnt/c/Users/anish/OneDrive -
+# stevens.edu/24spring/cs496/PLaF/src/let"
+# Auto-detected concurrency: 8
+# Dune context:
+#  { name = "default"
+#  ; kind = "default"
+#  ; profile = Dev
+#  ; merlin = true
+#  ; fdo_target_exe = None
+#  ; build_dir = In_build_dir "default"
+#  ; installed_env =
+#      map
+#        { "INSIDE_DUNE" :
+#            "/mnt/c/Users/anish/OneDrive - stevens.edu/24spring/cs496/PLaF/src/let/_build/default"
+#        ; "OCAML_COLOR" : "always"
+#        ; "OPAMCOLOR" : "always"
+#        }
+#  ; instrument_with = []
+#  }
+$ /usr/bin/ocamlc.opt -config > /tmp/dune_5e4ec2_output
+$ (cd _build/default && /usr/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -w -49 -nopervasives -nostdlib -g -bin-annot -I lib/.let.objs/byte -no-alias-deps -opaque -o lib/.let.objs/byte/let.cmo -c -impl lib/let.ml-gen)
+$ (cd _build/default && /usr/bin/ocamldep.opt -modules -impl lib/interp.ml) > _build/default/lib/.let.objs/let__Interp.impl.d
+$ (cd _build/default && /usr/bin/ocamldep.opt -modules -impl lib/ds.ml) > _build/default/lib/.let.objs/let__Ds.impl.d
+$ (cd _build/default && /usr/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -bin-annot -I lib/.let.objs/byte -I /home/avanish/.opam/default/lib/menhirLib -I /home/avanish/.opam/default/lib/parser_plaf -no-alias-deps -opaque -open Let -o lib/.let.objs/byte/let__Ds.cmo -c -impl lib/ds.ml)
+$ (cd _build/default && /usr/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -bin-annot -I lib/.let.objs/byte -I /home/avanish/.opam/default/lib/menhirLib -I /home/avanish/.opam/default/lib/parser_plaf -no-alias-deps -opaque -open Let -o lib/.let.objs/byte/let__Interp.cmo -c -impl lib/interp.ml)
+$ (cd _build/default && /usr/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o lib/let.cma lib/.let.objs/byte/let.cmo lib/.let.objs/byte/let__Ds.cmo lib/.let.objs/byte/let__Interp.cmo)
+$ (cd _build/default && /usr/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -w -24 -g -bin-annot -I lib/.utop/.utop.eobjs/byte -I /home/avanish/.opam/default/lib/bytes -I /home/avanish/.opam/default/lib/findlib -I /home/avanish/.opam/default/lib/lambda-term -I /home/avanish/.opam/default/lib/logs -I /home/avanish/.opam/default/lib/lwt -I /home/avanish/.opam/default/lib/lwt/unix -I /home/avanish/.opam/default/lib/lwt_react -I /home/avanish/.opam/default/lib/menhirLib -I /home/avanish/.opam/default/lib/mew -I /home/avanish/.opam/default/lib/mew_vi -I /home/avanish/.opam/default/lib/ocplib-endian -I /home/avanish/.opam/default/lib/ocplib-endian/bigstring -I /home/avanish/.opam/default/lib/parser_plaf -I /home/avanish/.opam/default/lib/react -I /home/avanish/.opam/default/lib/result -I /home/avanish/.opam/default/lib/trie -I /home/avanish/.opam/default/lib/uchar -I /home/avanish/.opam/default/lib/utop -I /home/avanish/.opam/default/lib/uucp -I /home/avanish/.opam/default/lib/uuseg -I /home/avanish/.opam/default/lib/uutf -I /home/avanish/.opam/default/lib/xdg -I /home/avanish/.opam/default/lib/zed -I /usr/lib/ocaml/compiler-libs -I /usr/lib/ocaml/threads -I lib/.let.objs/byte -no-alias-deps -o lib/.utop/.utop.eobjs/byte/dune__exe__Utop.cmo -c -impl lib/.utop/utop.ml-gen)
+$ (cd _build/default && /usr/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -w -24 -g -o lib/.utop/utop.bc /usr/lib/ocaml/compiler-libs/ocamlcommon.cma /usr/lib/ocaml/compiler-libs/ocamlbytecomp.cma /usr/lib/ocaml/compiler-libs/ocamltoplevel.cma /home/avanish/.opam/default/lib/findlib/findlib.cma /home/avanish/.opam/default/lib/findlib/findlib_top.cma /home/avanish/.opam/default/lib/logs/logs.cma /home/avanish/.opam/default/lib/lwt/lwt.cma /home/avanish/.opam/default/lib/logs/logs_lwt.cma /usr/lib/ocaml/unix.cma /usr/lib/ocaml/bigarray.cma /home/avanish/.opam/default/lib/ocplib-endian/ocplib_endian.cma /home/avanish/.opam/default/lib/ocplib-endian/bigstring/ocplib_endian_bigstring.cma /usr/lib/ocaml/threads/threads.cma /home/avanish/.opam/default/lib/lwt/unix/lwt_unix.cma -I /home/avanish/.opam/default/lib/lwt/../stublibs /home/avanish/.opam/default/lib/react/react.cma /home/avanish/.opam/default/lib/lwt_react/lwt_react.cma /home/avanish/.opam/default/lib/result/result.cma /home/avanish/.opam/default/lib/uutf/uutf.cma /home/avanish/.opam/default/lib/uucp/uucp.cma /home/avanish/.opam/default/lib/uuseg/uuseg.cma /home/avanish/.opam/default/lib/zed/zed.cma /home/avanish/.opam/default/lib/trie/trie.cma /home/avanish/.opam/default/lib/mew/mew.cma /home/avanish/.opam/default/lib/mew_vi/mew_vi.cma /home/avanish/.opam/default/lib/lambda-term/lambda_term.cma -I /home/avanish/.opam/default/lib/lambda-term/../stublibs /home/avanish/.opam/default/lib/xdg/xdg.cma -I /home/avanish/.opam/default/lib/xdg/../stublibs /home/avanish/.opam/default/lib/utop/uTop.cma /home/avanish/.opam/default/lib/menhirLib/menhirLib.cma /home/avanish/.opam/default/lib/parser_plaf/parser_plaf.cma lib/let.cma lib/.utop/.utop.eobjs/byte/dune__exe__Utop.cmo -linkall -warn-error -31)
