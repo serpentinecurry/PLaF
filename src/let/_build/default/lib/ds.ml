@@ -2,12 +2,15 @@
 
 (* expressed values and environments are defined mutually recursively *)
 
+type 'a tree = Empty | Node of 'a * 'a tree * 'a tree
 
 type exp_val =
   | NumVal of int
   | BoolVal of bool
   | PairVal of exp_val*exp_val
   | TupleVal of exp_val list
+  | TreeVal of exp_val tree
+  | RecordVal of (string*exp_val) list
 type env =
   | EmptyEnv
   | ExtendEnv of string*exp_val*env
@@ -123,3 +126,17 @@ let string_of_env : string ea_result =
   match env with
   | EmptyEnv -> Ok ">>Environment:\nEmpty"
   | _ -> Ok (">>Environment:\n"^ string_of_env' [] env)
+
+let tree_of_treeVal : exp_val -> (exp_val tree) ea_result =  function
+  | TreeVal t -> return t
+  | _ -> error "Expected a tree!"
+
+let rec_of_recordVal : exp_val -> ((string*exp_val) list) ea_result =  function
+  | RecordVal r -> return r
+  | _ -> error "Expected a record!"
+
+let rec has_dup_fields : 'a list -> bool =
+    fun l ->
+    match l with
+    | [] -> false
+    | (s,_)::t -> (List.mem_assoc s t) || has_dup_fields t

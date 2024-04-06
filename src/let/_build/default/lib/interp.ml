@@ -62,11 +62,62 @@ let rec eval_expr : expr -> exp_val ea_result =
     eval_expr e >>=
     pair_of_pairVal >>= fun (_,r) ->
     return r
+  | Unpair(id1,id2,e1,e2) ->
+    eval_expr e1 >>=
+    pair_of_pairVal >>= fun (l,r) ->
+    extend_env id1 l >>+
+    extend_env id2 r >>+
+    eval_expr e2
   | Debug(_e) ->
     string_of_env >>= fun str ->
     print_endline str; 
     error "Debug called"
+  | IsEmpty(e) -> 
+    eval_expr e >>=
+    tree_of_treeVal >>= fun t ->
+    return (BoolVal (t = Empty))
+  | EmptyTree(_t) -> 
+    return (TreeVal(Empty))
+  | Node(e1,e2,e3) -> 
+    eval_expr e1 >>= fun d ->
+    eval_expr e2 >>=
+    tree_of_treeVal >>= fun l ->
+    eval_expr e3 >>=
+    tree_of_treeVal >>= fun r ->
+    return (TreeVal(Node(d,l,r)))
+  | CaseT(e1,e2,id1,id2,id3,e3) -> 
+    eval_expr e1 >>=
+    tree_of_treeVal >>= fun t ->
+    begin
+    match t with
+    | Empty -> eval_expr e2
+    | Node(d,l,r) -> extend_env id1 d >>+
+                     extend_env id2 (TreeVal l) >>+
+                     extend_env id3 (TreeVal r) >>+
+                     eval_expr e3
+    end
+  | Record(fs) -> let l = List.map (fun (_,(_,e)) -> e) fs in
+                        eval_exprs l >>= fun v -> let x =
+                        List.map2 (fun (s,_) x -> (s,x)) fs v in
+                        if has_dup_fields x
+                        then error "Record: duplicate fields"
+                        else return (RecordVal x)
+  | Proj(e,id) -> 
+    eval_expr e >>=
+    rec_of_recordVal >>= fun r -> begin
+    match List.assoc_opt id r with
+    | Some f -> return f
+    | None -> error "Proj: field does not exist"
+    end
   | _ -> failwith "Not implemented yet!"
+and
+  eval_exprs : expr list -> (exp_val list) ea_result =
+  fun es ->
+  match es with
+  | [] -> return []
+  | h::t -> eval_expr h >>= fun i ->
+    eval_exprs t >>= fun l ->
+    return (i::l)
 
 (** [eval_prog e] evaluates program [e] *)
 let eval_prog (AProg(_,e)) =
