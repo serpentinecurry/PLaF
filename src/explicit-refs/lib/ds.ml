@@ -152,6 +152,13 @@ let string_of_env : string ea_result =
   | EmptyEnv -> Ok ">>Environment:\nEmpty"
   | _ -> Ok (">>Environment:\n"^ string_of_env' [] env)
 
-
+let rec sequence : ('a ea_result) list -> ('a list) ea_result =
+    fun cs ->
+    match cs with
+    | [] -> return []
+    | c::t ->
+      c >>= fun v ->
+      sequence t >>= fun  vs ->
+      return (v::vs)
 
 

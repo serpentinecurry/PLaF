@@ -52,6 +52,102 @@ let rec chk_expr : expr -> texpr tea_result = function
      else error
          "LetRec: Type of recursive function does not match
 declaration")
+  | NewRef(e) ->
+    chk_expr e >>= fun t ->
+    return (RefType t)
+  | DeRef(e) ->
+    chk_expr e >>= fun t ->
+    begin
+        match t with
+        | (RefType t1) -> return t1
+        | _ -> error "deref: argument must be a reference"
+    end
+  | SetRef(e1,e2) ->
+    chk_expr e1 >>= fun t1 ->
+    chk_expr e2 >>= fun t2 ->
+    begin
+        match t1 with
+        | (RefType tRef) ->
+            if tRef=t2
+            then return UnitType
+            else error "setref: incompatible types"
+        | _ -> error "setref: Expected a reference type"
+    end
+  | BeginEnd([]) -> return UnitType
+  | BeginEnd(es) ->
+    List.fold_left (fun c e -> c >>= fun _ -> chk_expr e) (return UnitType) es
+  | EmptyList(t) ->
+    begin
+        match t with
+        | Some tp -> return (ListType tp)
+        | None -> error "emptylist: Expected a type"
+    end
+  | Cons(e1,e2) ->
+    chk_expr e1 >>= fun t1 ->
+    chk_expr e2 >>= fun t2 ->
+    begin
+        match t2 with
+        | ListType lt ->
+            if lt=t1
+            then return (ListType t1)
+            else error "cons: type of head and tail do not match"
+        | _ -> error "cons: Expected a list type"
+    end
+  | IsEmpty(e) ->
+    chk_expr e >>= fun t ->
+    begin
+        match t with
+        | ListType _ -> return BoolType
+        | TreeType _ -> return BoolType
+        | _ -> error "empty?: expected a list or tree type"
+    end
+  | Hd(e) ->
+    chk_expr e >>= fun t ->
+    begin
+        match t with
+        | ListType lt -> return lt
+        | _ -> error "hd: expected a list type"
+    end
+  | Tl(e) ->
+    chk_expr e >>= fun t ->
+    begin
+        match t with
+        | ListType lt -> return (ListType lt)
+        | _ -> error "tl: expected a list type"
+    end
+  | EmptyTree(t) ->
+    begin
+        match t with
+        | Some tp -> return (TreeType tp)
+        | _ -> error "emptytree: expected a type"
+    end
+  | Node(de, le, re) ->
+    chk_expr de >>= fun td ->
+    chk_expr le >>= fun t1 ->
+    chk_expr re >>= fun t2 ->
+    begin
+        match (t1, t2) with
+        | (TreeType tl, TreeType tr) ->
+                if (tl=td && tr=td)
+                then return (TreeType td)
+                else error "node: types don't match"
+        | _ -> error "node: left and right children must be trees"
+    end
+  | CaseT(target, emptycase, id1, id2, id3, nodecase) ->
+    chk_expr target >>= fun tTarg ->
+    begin
+        match tTarg with
+        | TreeType t -> 
+            extend_tenv id1 t >>+
+            extend_tenv id2 (TreeType t) >>+
+            extend_tenv id3 (TreeType t) >>+
+            chk_expr emptycase >>= fun t1 ->
+            chk_expr nodecase >>= fun t2 ->
+                if t1=t2
+                then return t1
+                else error "caseT: empty case and node case must be the same type"
+        | _ -> error "caseT: argument must be a tree"
+    end
   | Debug(_e) ->
     string_of_tenv >>= fun str ->
     print_endline str;
